@@ -57,19 +57,19 @@ configurePassport({
   google: {
     clientID: process.env.AUTH_GOOGLE_CLIENT!,
     clientSecret: process.env.AUTH_GOOGLE_SECRET!,
-    callbackURL: '/auth/google/callback',
+    callbackURL: `${process.env.HERMES_API}/auth/google/callback`,
     scope: ['profile'],
   },
   discord: {
     clientID: process.env.AUTH_DISCORD_CLIENT!,
     clientSecret: process.env.AUTH_DISCORD_SECRET!,
-    callbackURL: '/auth/discord/callback',
+    callbackURL: `${process.env.HERMES_API}//auth/discord/callback`,
     scope: ['identify'],
   },
   github: {
     clientID: process.env.AUTH_GITHUB_CLIENT!,
     clientSecret: process.env.AUTH_GITHUB_SECRET!,
-    callbackURL: '/auth/github/callback',
+    callbackURL: `${process.env.HERMES_API}//auth/github/callback`,
     scope: ['read:user'],
   },
 });
