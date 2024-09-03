@@ -53,6 +53,7 @@ app.use(
       secure: true,
       httpOnly: true,
       sameSite: 'none',
+      domain: '.herokuapp.com',
       maxAge: 24 * 60 * 60 * 1000
     }
   })
