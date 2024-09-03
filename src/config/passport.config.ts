@@ -25,7 +25,6 @@ export const configurePassport = (config: PassportConfig) => {
         clientSecret: config.google.clientSecret,
         callbackURL: config.google.callbackURL,
         scope: config.google.scope || ['profile'],
-        proxy: true,
       },
       async (
         accessToken: string,
@@ -54,7 +53,6 @@ export const configurePassport = (config: PassportConfig) => {
         clientSecret: config.discord.clientSecret,
         callbackURL: config.discord.callbackURL,
         scope: config.discord.scope || ['identify'],
-        proxy: true,
       },
       async (
         accessToken: string,
@@ -83,7 +81,6 @@ export const configurePassport = (config: PassportConfig) => {
         clientSecret: config.github.clientSecret,
         callbackURL: config.github.callbackURL,
         scope: config.github.scope || ['read:user'],
-        proxy: true,
       },
       async (
         accessToken: string,
