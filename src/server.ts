@@ -8,7 +8,7 @@ import passport from 'passport';
 import path from 'path';
 import { Server } from 'socket.io';
 import connectRedis from 'connect-redis';
-import Redis from 'ioredis';
+import { Redis } from 'ioredis';
 
 import { configurePassport } from './config/passport.config';
 import { isAuthenticated } from './middleware/auth.middleware';
