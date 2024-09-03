@@ -63,13 +63,13 @@ configurePassport({
   discord: {
     clientID: process.env.AUTH_DISCORD_CLIENT!,
     clientSecret: process.env.AUTH_DISCORD_SECRET!,
-    callbackURL: `${process.env.HERMES_API}//auth/discord/callback`,
+    callbackURL: `${process.env.HERMES_API}/auth/discord/callback`,
     scope: ['identify'],
   },
   github: {
     clientID: process.env.AUTH_GITHUB_CLIENT!,
     clientSecret: process.env.AUTH_GITHUB_SECRET!,
-    callbackURL: `${process.env.HERMES_API}//auth/github/callback`,
+    callbackURL: `${process.env.HERMES_API}/auth/github/callback`,
     scope: ['read:user'],
   },
 });
