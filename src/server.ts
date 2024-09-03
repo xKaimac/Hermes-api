@@ -7,8 +7,7 @@ import http from 'http';
 import passport from 'passport';
 import path from 'path';
 import { Server } from 'socket.io';
-import connectRedis from 'connect-redis';
-import { Redis } from 'ioredis';
+import RedisStore, { connectRedis } from 'connect-redis';
 
 import { configurePassport } from './config/passport.config';
 import { isAuthenticated } from './middleware/auth.middleware';
@@ -19,15 +18,14 @@ import { initializeSocket } from './services/socket/socket.service';
 
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
-const RedisStore = connectRedis(session);
-const redisClient = new Redis({
-  host: process.env.REDIS_HOST,
-  port: parseInt(process.env.REDIS_PORT || '6379'),
-  password: process.env.REDIS_PASSWORD,
-  tls: process.env.NODE_ENV === 'production' ? {} : undefined
-});const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 const app = express();
 const server = http.createServer(app);
+const redisClient = createClient({
+  url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
+  password: process.env.REDIS_PASSWORD,
+});
+redisClient.connect().catch(console.error);
 const io = new Server(server, {
   cors: {
     origin: process.env.HERMES_URL,
@@ -51,7 +49,6 @@ app.use(
 );
 
 app.set('trust proxy', 1);
-
 app.use(
   session({
     store: new RedisStore({ client: redisClient }),
