@@ -20,8 +20,12 @@ import { initializeSocket } from './services/socket/socket.service';
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const RedisStore = connectRedis(session);
-const redisClient = new Redis(process.env.REDIS_URL);
-const PORT = process.env.PORT || 3000;
+const redisClient = new Redis({
+  host: process.env.REDIS_HOST,
+  port: parseInt(process.env.REDIS_PORT || '6379'),
+  password: process.env.REDIS_PASSWORD,
+  tls: process.env.NODE_ENV === 'production' ? {} : undefined
+});const PORT = process.env.PORT || 3000;
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
