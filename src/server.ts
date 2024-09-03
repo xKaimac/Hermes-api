@@ -7,6 +7,8 @@ import http from 'http';
 import passport from 'passport';
 import path from 'path';
 import { Server } from 'socket.io';
+import connectRedis from 'connect-redis';
+import Redis from 'ioredis';
 
 import { configurePassport } from './config/passport.config';
 import { isAuthenticated } from './middleware/auth.middleware';
@@ -17,6 +19,8 @@ import { initializeSocket } from './services/socket/socket.service';
 
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
+const RedisStore = connectRedis(session);
+const redisClient = new Redis(process.env.REDIS_URL);
 const PORT = process.env.PORT || 3000;
 const app = express();
 const server = http.createServer(app);
@@ -46,16 +50,17 @@ app.set('trust proxy', 1);
 
 app.use(
   session({
+    store: new RedisStore({ client: redisClient }),
     secret: process.env.SESSION_SECRET || '',
     resave: false,
     saveUninitialized: false,
-    // cookie: {
-    //   secure: true,
-    //   httpOnly: true,
-    //   sameSite: 'none',
-    //   domain: '.herokuapp.com',
-    //   maxAge: 24 * 60 * 60 * 1000
-    // }
+    cookie: {
+      secure: true,
+      httpOnly: true,
+      sameSite: 'none',
+      domain: '.herokuapp.com',
+      maxAge: 24 * 60 * 60 * 1000
+    }
   })
 );
 
