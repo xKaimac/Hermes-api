@@ -51,7 +51,7 @@ app.use(
       secure: true,
       httpOnly: true,
       sameSite: "lax",
-      domain: "*.heroku.com",
+      domain: ".hermes-messenger.xyz",
       maxAge: 24 * 60 * 60 * 1000,
     },
   })
