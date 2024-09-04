@@ -48,11 +48,10 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: process.env.NODE_ENV === "production",
+      secure: true,
       httpOnly: true,
       sameSite: "lax",
-      domain:
-        process.env.NODE_ENV === "production" ? ".herokuapp.com" : undefined,
+      domain: ".onrender.com",
       maxAge: 24 * 60 * 60 * 1000,
     },
   })
