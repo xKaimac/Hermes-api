@@ -51,7 +51,7 @@ app.use(
       secure: true,
       httpOnly: true,
       sameSite: "lax",
-      domain: ".onrender.com",
+      domain: "*.heroku.com",
       maxAge: 24 * 60 * 60 * 1000,
     },
   })
