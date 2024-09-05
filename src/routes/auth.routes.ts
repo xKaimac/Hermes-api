@@ -71,7 +71,7 @@ router.get('/status', (req, res) => {
   console.error('Session:', req.session);
   console.error('User:', req.user);
   console.error('Is Authenticated:', req.isAuthenticated());
-  
+
   if (req.isAuthenticated()) {
     res.json({ isAuthenticated: true, user: req.user });
   } else {

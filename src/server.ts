@@ -1,20 +1,20 @@
-import bodyParser from "body-parser";
-import cors from "cors";
-import dotenv from "dotenv";
-import express from "express";
-import session from "express-session";
-import http from "http";
-import passport from "passport";
-import path from "path";
-import { Server } from "socket.io";
-import { configurePassport } from "./config/passport.config";
-import { isAuthenticated } from "./middleware/auth.middleware";
-import createAllTables from "./models/user.model";
-import routes from "./routes/index";
-import publicRoutes from "./routes/public.routes";
-import { initializeSocket } from "./services/socket/socket.service";
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import express from 'express';
+import session from 'express-session';
+import http from 'http';
+import passport from 'passport';
+import path from 'path';
+import { Server } from 'socket.io';
+import { configurePassport } from './config/passport.config';
+import { isAuthenticated } from './middleware/auth.middleware';
+import createAllTables from './models/user.model';
+import routes from './routes/index';
+import publicRoutes from './routes/public.routes';
+import { initializeSocket } from './services/socket/socket.service';
 
-dotenv.config({ path: path.resolve(__dirname, "../.env") });
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -22,7 +22,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: process.env.HERMES_URL,
-    methods: ["GET", "POST"],
+    methods: ['GET', 'POST'],
     credentials: true,
   },
 });
@@ -34,24 +34,27 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   cors({
     origin: process.env.HERMES_URL,
-    methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
   })
 );
 
-app.set("trust proxy", 1);
+app.set('trust proxy', 1);
 
 app.use(
   session({
-    secret: process.env.SESSION_SECRET || "",
+    secret: process.env.SESSION_SECRET || '',
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: true,
+      secure: process.env.NODE_ENV === 'production',
       httpOnly: true,
-      sameSite: "lax",
-      domain: ".hermes-messenger.xyz",
+      sameSite: 'lax',
+      domain:
+        process.env.NODE_ENV === 'production'
+          ? process.env.HERMES_DOMAIN
+          : undefined,
       maxAge: 24 * 60 * 60 * 1000,
     },
   })
@@ -65,19 +68,19 @@ configurePassport({
     clientID: process.env.AUTH_GOOGLE_CLIENT!,
     clientSecret: process.env.AUTH_GOOGLE_SECRET!,
     callbackURL: `${process.env.HERMES_API}/auth/google/callback`,
-    scope: ["profile"],
+    scope: ['profile'],
   },
   discord: {
     clientID: process.env.AUTH_DISCORD_CLIENT!,
     clientSecret: process.env.AUTH_DISCORD_SECRET!,
     callbackURL: `${process.env.HERMES_API}/auth/discord/callback`,
-    scope: ["identify"],
+    scope: ['identify'],
   },
   github: {
     clientID: process.env.AUTH_GITHUB_CLIENT!,
     clientSecret: process.env.AUTH_GITHUB_SECRET!,
     callbackURL: `${process.env.HERMES_API}/auth/github/callback`,
-    scope: ["read:user"],
+    scope: ['read:user'],
   },
 });
 
